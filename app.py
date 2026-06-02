@@ -212,17 +212,25 @@ if pagina == "Registrar Crise":
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image("images/josh_filhote.jpg", caption="Filhote", use_container_width=True)
-    with col2:
-        st.image("images/josh_adulto.jpg", caption="Hoje", use_container_width=True)
+    import base64
+    def img_base64(path):
+        with open(path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
 
-    st.markdown("""
-    <div style='text-align:center; font-style:italic; font-size:0.95rem; line-height:1.7; padding: 0.8rem 0.5rem 0.5rem 0.5rem; color:#FFFFFF; font-weight:400;'>
-    "Josh nos ensina todos os dias que família não é sobre ser perfeito.<br>
-    É sobre estar junto, cuidar, e escolher ficar — todos os dias.<br><br>
-    <b>O amor mais puro e verdadeiro.</b>"
+    f1 = img_base64("images/josh_filhote.jpg")
+    f2 = img_base64("images/josh_adulto.jpg")
+
+    st.markdown(f"""
+    <div style="text-align:center; padding: 0.5rem 0;">
+        <img src="data:image/jpeg;base64,{f1}" style="width:90px; height:90px; object-fit:cover; border-radius:50%; margin:0 10px; border:2px solid #888;">
+        <img src="data:image/jpeg;base64,{f2}" style="width:90px; height:90px; object-fit:cover; border-radius:50%; margin:0 10px; border:2px solid #888;">
+    </div>
+    <div style="background:#222; border-radius:12px; padding:16px 20px; margin:12px 0; border-left:3px solid #888;">
+        <p style="color:#FFFFFF; font-size:15px; line-height:1.8; font-style:italic; margin:0; text-align:center;">
+        "Josh nos ensina todos os dias que família não é sobre ser perfeito.
+        É sobre estar junto, cuidar, e escolher ficar — todos os dias.
+        O amor mais puro e verdadeiro."
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
