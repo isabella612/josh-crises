@@ -212,19 +212,19 @@ if pagina == "Registrar Crise":
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2 = st.columns(2)
     with col1:
-        st.image("images/josh_filhote.jpg", width=100)
-    with col3:
-        st.image("images/josh_adulto.jpg", width=100)
+        st.image("images/josh_filhote.jpg", caption="Filhote", use_container_width=True)
     with col2:
-        st.markdown("""
-        <div style='text-align:center; font-style:italic; font-size:0.78rem; line-height:1.6; padding-top:0.5rem; color:#FFFFFF;'>
-        "Josh nos ensina que família não é sobre ser perfeito.
-        É sobre estar junto, cuidar, e escolher ficar — todos os dias.
-        O amor mais puro e verdadeiro."
-        </div>
-        """, unsafe_allow_html=True)
+        st.image("images/josh_adulto.jpg", caption="Hoje", use_container_width=True)
+
+    st.markdown("""
+    <div style='text-align:center; font-style:italic; font-size:0.95rem; line-height:1.7; padding: 0.8rem 0.5rem 0.5rem 0.5rem; color:#FFFFFF; font-weight:400;'>
+    "Josh nos ensina todos os dias que família não é sobre ser perfeito.<br>
+    É sobre estar junto, cuidar, e escolher ficar — todos os dias.<br><br>
+    <b>O amor mais puro e verdadeiro.</b>"
+    </div>
+    """, unsafe_allow_html=True)
 
     st.divider()
     st.title("Registrar Nova Crise")
