@@ -20,19 +20,6 @@ st.markdown("""
     padding: 0.6rem 1rem;
     font-size: 1rem;
 }
-/* Metricas mais compactas */
-[data-testid="stMetric"] {
-    background: #1e1e2e;
-    border-radius: 12px;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-}
-[data-testid="stMetricLabel"] {
-    font-size: 0.75rem !important;
-}
-[data-testid="stMetricValue"] {
-    font-size: 1.1rem !important;
-}
 /* Expanders mais legiveis */
 [data-testid="stExpander"] {
     border-radius: 10px;
@@ -219,6 +206,27 @@ df_crises = carregar_crises()
 # PÁGINA: Registrar Crise
 # ═════════════════════════════════════════════════════════════════════════════
 if pagina == "Registrar Crise":
+    st.markdown("""
+    <div style='text-align:center; padding: 0.5rem 0;'>
+        <span style='font-size:1.5rem; font-weight:bold;'>🐾 Josh</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col1:
+        st.image("images/josh_filhote.jpg", width=100)
+    with col3:
+        st.image("images/josh_adulto.jpg", width=100)
+    with col2:
+        st.markdown("""
+        <div style='text-align:center; font-style:italic; font-size:0.78rem; line-height:1.6; padding-top:0.5rem; color:#FFFFFF;'>
+        "Josh nos ensina que família não é sobre ser perfeito.
+        É sobre estar junto, cuidar, e escolher ficar — todos os dias.
+        O amor mais puro e verdadeiro."
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.divider()
     st.title("Registrar Nova Crise")
 
     with st.form("form_crise", clear_on_submit=True):
@@ -318,22 +326,6 @@ if pagina == "Registrar Crise":
 # ═════════════════════════════════════════════════════════════════════════════
 elif pagina == "Dashboard":
     st.title("Dashboard de Crises — Josh")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image("images/josh_filhote.jpg", caption="Josh filhote", use_container_width=True)
-    with col2:
-        st.image("images/josh_adulto.jpg", caption="Josh hoje", use_container_width=True)
-
-    st.markdown("""
-    <div style='text-align: center; padding: 1rem 0.5rem; font-style: italic; font-size: 1rem; line-height: 1.6; color: #ccc;'>
-    "Josh nos ensina todos os dias que família não é sobre ser perfeito.<br>
-    É sobre estar junto, cuidar, e escolher ficar — todos os dias.<br>
-    O amor mais puro e verdadeiro."
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.divider()
 
     if df_crises.empty:
         st.info("Nenhuma crise registrada ainda.")
