@@ -8,9 +8,51 @@ import math
 st.set_page_config(
     page_title="Diario de Crises — Josh",
     page_icon="🐾",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    layout="centered",
+    initial_sidebar_state="collapsed",
 )
+
+st.markdown("""
+<style>
+/* Mobile-first: botoes largura total */
+.stButton > button {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+}
+/* Metricas mais compactas */
+[data-testid="stMetric"] {
+    background: #1e1e2e;
+    border-radius: 12px;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 0.75rem !important;
+}
+[data-testid="stMetricValue"] {
+    font-size: 1.1rem !important;
+}
+/* Expanders mais legiveis */
+[data-testid="stExpander"] {
+    border-radius: 10px;
+    margin-bottom: 0.4rem;
+}
+/* Inputs largura total */
+[data-testid="stTextInput"] input,
+[data-testid="stTextArea"] textarea {
+    font-size: 1rem;
+}
+/* Divider mais sutil */
+hr {
+    margin: 0.8rem 0;
+}
+/* Caption menor */
+.stCaption {
+    font-size: 0.7rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ── Cliente REST Supabase ─────────────────────────────────────────────────────
 
@@ -224,13 +266,9 @@ if pagina == "Registrar Crise":
             "Quanto tempo levou para voltar ao normal?",
             placeholder="Ex: 10 minutos, 1 hora...",
         )
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            apos_desorientado = st.checkbox("Ficou desorientado")
-        with col2:
-            apos_fome = st.checkbox("Ficou com muita fome")
-        with col3:
-            apos_cambaleando = st.checkbox("Ficou cambaleando")
+        apos_desorientado = st.checkbox("Ficou desorientado")
+        apos_fome = st.checkbox("Ficou com muita fome")
+        apos_cambaleando = st.checkbox("Ficou cambaleando")
 
         st.divider()
         st.subheader("Medicacao")
@@ -294,14 +332,12 @@ elif pagina == "Dashboard":
         ultima_crise = df_sorted["data_hora"].max()
         dias_desde_ultima = (datetime.now() - ultima_crise).days
 
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2 = st.columns(2)
         with col1:
             st.metric("Total de Crises", len(df_crises))
+            st.metric("Sem crise ha", formatar_periodo(dias_desde_ultima))
         with col2:
             st.metric("Ultima Crise", ultima_crise.strftime("%d/%m/%Y"))
-        with col3:
-            st.metric("Sem crise ha", formatar_periodo(dias_desde_ultima))
-        with col4:
             if intervalos:
                 st.metric("Intervalo medio", formatar_periodo(int(sum(intervalos) / len(intervalos))))
             else:
@@ -389,13 +425,13 @@ elif pagina == "Medicamentos":
             (365, "1 ano"),
         ]
 
-        cols = st.columns(len(MARCOS))
-        for col, (dias, label) in zip(cols, MARCOS):
-            with col:
-                if dias_sem_crise >= dias:
-                    st.success(f"**{label}**\nalcancado!")
-                else:
-                    st.markdown(f"<div style='text-align:center;color:gray'>{label}</div>", unsafe_allow_html=True)
+        for dias_marco, label in MARCOS:
+            if dias_sem_crise >= dias_marco:
+                data_marco = ultima_crise + timedelta(days=dias_marco)
+                st.success(f"**{label}** — alcancado em {data_marco.strftime('%d/%m/%Y')}")
+            else:
+                faltam = dias_marco - dias_sem_crise
+                st.markdown(f"⬜ **{label}** — em andamento")
 
     st.divider()
     st.subheader("Horarios Atuais")
@@ -510,21 +546,17 @@ elif pagina == "Relatorio para o Vet":
 
         st.markdown("---")
         st.subheader("Resumo Geral")
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         with col1:
             st.metric("Total de crises", len(df_f))
+            if intervalos:
+                st.metric("Menor intervalo", formatar_periodo(int(min(intervalos))))
         with col2:
             st.metric("Sem crise ha", formatar_periodo(dias_sem_crise))
-        with col3:
             if intervalos:
-                st.metric("Intervalo medio", formatar_periodo(int(sum(intervalos) / len(intervalos))))
-
-        if intervalos:
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Menor intervalo", formatar_periodo(int(min(intervalos))))
-            with col2:
                 st.metric("Maior intervalo", formatar_periodo(int(max(intervalos))))
+        if intervalos:
+            st.metric("Intervalo medio", formatar_periodo(int(sum(intervalos) / len(intervalos))))
 
         if penultima is not None:
             dias_final = int((ultima - penultima).total_seconds() / 86400)
