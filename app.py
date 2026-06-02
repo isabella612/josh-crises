@@ -366,32 +366,35 @@ elif pagina == "Medicamentos":
     df_horarios = carregar_horarios()
     df_doses = carregar_historico_doses()
 
-    st.subheader("Contador para o Desmame")
-    META_DIAS = 365
+    st.subheader("Sequencia sem crises")
 
     if df_crises.empty:
         st.info("Nenhuma crise registrada ainda.")
     else:
         ultima_crise = df_crises.sort_values("data_hora")["data_hora"].max()
         dias_sem_crise = (datetime.now() - ultima_crise).days
-        progresso = min(dias_sem_crise / META_DIAS, 1.0)
-        falta = max(META_DIAS - dias_sem_crise, 0)
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Sem crise ha", formatar_periodo(dias_sem_crise))
-        with col2:
-            st.metric("Meta", "1 ano sem crises")
-        with col3:
-            st.metric("Faltam", formatar_periodo(falta) if falta > 0 else "Meta atingida!")
+        st.markdown(f"### Josh esta ha **{formatar_periodo(dias_sem_crise)}** sem crises")
+        st.caption(f"Ultima crise registrada: {ultima_crise.strftime('%d/%m/%Y')}")
 
-        st.progress(progresso)
+        st.markdown("")
+        st.markdown("**Marcos alcancados:**")
 
-        if falta == 0:
-            st.success("1 ano sem crises atingido! Converse com o neurologista sobre o desmame.")
-        else:
-            data_meta = ultima_crise + timedelta(days=META_DIAS)
-            st.info(f"Meta prevista para: {data_meta.strftime('%d/%m/%Y')}")
+        MARCOS = [
+            (7,   "1 semana"),
+            (30,  "1 mes"),
+            (90,  "3 meses"),
+            (180, "6 meses"),
+            (365, "1 ano"),
+        ]
+
+        cols = st.columns(len(MARCOS))
+        for col, (dias, label) in zip(cols, MARCOS):
+            with col:
+                if dias_sem_crise >= dias:
+                    st.success(f"**{label}**\nalcancado!")
+                else:
+                    st.markdown(f"<div style='text-align:center;color:gray'>{label}</div>", unsafe_allow_html=True)
 
     st.divider()
     st.subheader("Horarios Atuais")
