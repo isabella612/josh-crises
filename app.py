@@ -63,7 +63,7 @@ def carregar_crises() -> pd.DataFrame:
     if not data:
         return pd.DataFrame()
     df = pd.DataFrame(data)
-    df["data_hora"] = pd.to_datetime(df["data_hora"])
+    df["data_hora"] = pd.to_datetime(df["data_hora"]).dt.tz_localize(None)
     return df
 
 
