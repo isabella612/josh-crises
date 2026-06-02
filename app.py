@@ -319,6 +319,22 @@ if pagina == "Registrar Crise":
 elif pagina == "Dashboard":
     st.title("Dashboard de Crises — Josh")
 
+    col1, col2 = st.columns(2)
+    with col1:
+        st.image("images/josh_filhote.jpg", caption="Josh filhote", use_container_width=True)
+    with col2:
+        st.image("images/josh_adulto.jpg", caption="Josh hoje", use_container_width=True)
+
+    st.markdown("""
+    <div style='text-align: center; padding: 1rem 0.5rem; font-style: italic; font-size: 1rem; line-height: 1.6; color: #ccc;'>
+    "Josh nos ensina todos os dias que família não é sobre ser perfeito.<br>
+    É sobre estar junto, cuidar, e escolher ficar — todos os dias.<br>
+    O amor mais puro e verdadeiro."
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
     if df_crises.empty:
         st.info("Nenhuma crise registrada ainda.")
     else:
