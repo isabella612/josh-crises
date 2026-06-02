@@ -322,6 +322,7 @@ elif pagina == "Dashboard":
 
         st.divider()
         st.subheader("Historico de Crises")
+        st.caption("🔴 Cluster (ate 7 dias)  |  🟠 Curto (ate 21 dias)  |  🟡 Medio (ate 60 dias)  |  🟢 Longo (mais de 60 dias)")
         df_rev = df_sorted[::-1].reset_index(drop=True)
         for i, row in df_rev.iterrows():
             idx_original = len(df_sorted) - 1 - i
