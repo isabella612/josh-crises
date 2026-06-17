@@ -243,7 +243,7 @@ if pagina == "Registrar Crise":
         with col1:
             data = st.date_input("Data da crise", value=datetime.now().date())
         with col2:
-            hora = st.time_input("Hora da crise", value=datetime.now().time())
+            hora = st.time_input("Hora da crise", value=datetime.now().time(), step=60)
 
         st.divider()
         st.subheader("Duracao")
